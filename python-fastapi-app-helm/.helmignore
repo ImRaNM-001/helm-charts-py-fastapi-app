@@ -1,0 +1,62 @@
+# Patterns to ignore when building packages.
+# This supports shell glob matching, relative path matching, and
+# negation (prefixed with !). Only one pattern per line.
+.DS_Store
+# Common VCS dirs
+.git/
+.gitignore
+.bzr/
+.bzrignore
+.hg/
+.hgignore
+.svn/
+# Common backup files
+*.swp
+*.bak
+*.tmp
+*.orig
+*~
+# Various IDEs
+.project
+.idea/
+*.tmproj
+.vscode/
+# TEMP and NOT-NEEDED directories
+TEMP_References/
+NOT-NEEDED/
+# OS generated files
+Thumbs.db
+# Development and testing files
+*.test
+test/
+tests/
+# Documentation files (optional, uncomment if you don't want them in the package)
+# README.md
+# LICENSE
+# Build artifacts
+dist/
+build/
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+# Node modules
+node_modules/
+# Logs
+*.log
+# Runtime data
+pids
+*.pid
+*.seed
+# Coverage directory used by tools like istanbul
+coverage/
+# Dependency directories
+vendor/

@@ -1,0 +1,122 @@
+# Default values for python-fastapi-app-helm.
+# This is a YAML-formatted file.
+# Declare variables to be substituted into your templates.
+
+replicaCount: 2
+
+image:
+  repository: 04-python-fastapi-app
+  pullPolicy: Never
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Security Context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1001
+  capabilities:
+    drop:
+    - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  protocol: TCP
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: fastapi.local.org
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 250m
+    memory: 64Mi
+
+# ConfigMap data
+config:
+  dbPort: "8886"
+
+# Secret data (base64 encoded values)
+# NOTE: In production, we provide these via external secret management
+secrets:
+  dbUsername: "YWRtaW4="              
+  dbPassword: "U3VwZXJTZWNyZXQxMjM="   
+  dbHost: "bG9jYWxob3N0"              
+  apiKey: "YWJjZGVmZ2hpams="          
+  jwtSecret: "bXlfc3VwZXJfc2VjcmV0X2p3dF9rZXk="  
+
+# Volume mounts
+volumeMounts:
+  - name: db-env-port
+    mountPath: /etc/config
+    readOnly: true
+  - name: secret-files
+    mountPath: /mnt/secrets
+    readOnly: true
+  - name: tmp-volume
+    mountPath: /tmp
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels:
+  app: fastapi-app
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# Autoscaling
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes
+volumes: []
+
+# Additional volume mounts
+additionalVolumeMounts: []
+
+# Additional environment variables
+env: []
+
+# Service account
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
